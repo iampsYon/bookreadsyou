@@ -2,19 +2,23 @@ const OPENAI_API_KEY = "sk-proj-dALcEnPoePIqLYzfb243COvGhENsWezL9HJALQAocHJrXQe_
 
 async function getGPTScene(user, history) {
   const prompt = `
-You are an interactive storytelling engine. The reader is named ${user.name}, who prefers ${user.genre} stories and has a morality score of ${user.morality} (0 = dishonest, 100 = virtuous).
+You are a story generation engine. Return only a valid JSON object like this:
 
-Previous choices: ${history.slice(0, -1).join(" → ")}
-Latest choice: "${history[history.length - 1]}"
-
-Write a new paragraph of story that continues from that choice.
-Then output 2–3 new decisions the reader can make.
-
-Respond ONLY in this exact JSON format:
 {
   "text": "Narrative paragraph here...",
   "choices": ["Choice A", "Choice B", "Choice C"]
 }
+
+User info:
+- Name: ${user.name}
+- Genre: ${user.genre}
+- Morality score: ${user.morality} (0 = dishonest, 100 = virtuous)
+
+Story so far: ${history.slice(0, -1).join(" → ")}
+Last choice: "${history[history.length - 1]}"
+
+Continue the story with one paragraph, then give 2–3 next choices.
+Output only valid JSON. No explanation or commentary.
 `;
 
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -35,10 +39,15 @@ Respond ONLY in this exact JSON format:
   const text = json.choices?.[0]?.message?.content || "";
 
   try {
-    return JSON.parse(text);
+    const fixed = text
+      .replace(/[“”]/g, '"')         // Replace smart quotes
+      .replace(/‘|’/g, "'")          // Replace single smart quotes
+      .trim();
+
+    return JSON.parse(fixed);
   } catch (e) {
     return {
-      text: "⚠️ GPT response was not valid JSON. Here’s the raw output:\n\n" + text,
+      text: "⚠️ GPT response was not valid JSON. Here's the raw output:\n\n" + text,
       choices: ["Try again", "Reset"]
     };
   }
