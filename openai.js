@@ -29,7 +29,7 @@ Output only valid JSON. No explanation or commentary.
         "Authorization": `Bearer ${OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.8,
         max_tokens: 500
@@ -38,15 +38,24 @@ Output only valid JSON. No explanation or commentary.
 
     const json = await res.json();
 
-    // Debug log the full raw response
-    return {
-      text: `🔍 Full OpenAI response:\n\n${JSON.stringify(json, null, 2)}`,
-      choices: ["Try again", "Reset"]
-    };
+    const raw = JSON.stringify(json, null, 2);
+
+    const content = json?.choices?.[0]?.message?.content;
+
+    if (!content) {
+      return {
+        text: `❌ GPT did not return any message content.\n\n--- BEGIN RAW JSON ---\n${raw}\n--- END RAW JSON ---`,
+        choices: ["Try again", "Reset"]
+      };
+    }
+
+    const cleaned = content.replace(/[“”]/g, '"').replace(/[‘’]/g, "'").trim();
+
+    return JSON.parse(cleaned);
 
   } catch (err) {
     return {
-      text: `❌ ERROR: ${err.message || "Unknown error"}`,
+      text: `❌ ERROR: ${err.message || "Unknown error"}\n`,
       choices: ["Try again", "Reset"]
     };
   }
