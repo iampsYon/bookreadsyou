@@ -21,33 +21,46 @@ Continue the story with one paragraph, then give 2–3 next choices.
 Output only valid JSON. No explanation or commentary.
 `;
 
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${OPENAI_API_KEY}`
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.8,
-      max_tokens: 500
-    })
-  });
-
-  const json = await res.json();
-  const text = json.choices?.[0]?.message?.content || "";
-
   try {
-    const fixed = text
-      .replace(/[“”]/g, '"')         // Replace smart quotes
-      .replace(/‘|’/g, "'")          // Replace single smart quotes
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.8,
+        max_tokens: 500
+      })
+    });
+
+    const json = await res.json();
+    const text = json.choices?.[0]?.message?.content || "";
+
+    // Pre-clean the response
+    const cleaned = text
+      .replace(/[“”]/g, '"')
+      .replace(/[‘’]/g, "'")
       .trim();
 
-    return JSON.parse(fixed);
-  } catch (e) {
+    // Attempt to parse
+    return JSON.parse(cleaned);
+
+  } catch (err) {
+    const debugMessage = `
+⚠️ GPT response was not valid JSON.
+--- BEGIN RAW OUTPUT ---
+${err?.message || "Unknown error"}
+
+If available, here’s the GPT raw output:
+${typeof text !== "undefined" ? text : "No response returned"}
+--- END RAW OUTPUT ---
+    `.trim();
+
     return {
-      text: "⚠️ GPT response was not valid JSON. Here's the raw output:\n\n" + text,
+      text: debugMessage,
       choices: ["Try again", "Reset"]
     };
   }
