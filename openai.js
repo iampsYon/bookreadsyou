@@ -1,4 +1,4 @@
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "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";
 
 async function getGPTScene(user, history) {
   const prompt = `
@@ -38,13 +38,16 @@ Output only valid JSON. No explanation or commentary.
 
     const json = await res.json();
 
-    const raw = JSON.stringify(json, null, 2);
-
     const content = json?.choices?.[0]?.message?.content;
+    const raw = JSON.stringify(json, null, 2);
 
     if (!content) {
       return {
-        text: `❌ GPT did not return any message content.\n\n--- BEGIN RAW JSON ---\n${raw}\n--- END RAW JSON ---`,
+        text: `❌ GPT did not return any message content.
+
+--- BEGIN RAW JSON ---
+${raw}
+--- END RAW JSON ---`,
         choices: ["Try again", "Reset"]
       };
     }
@@ -55,7 +58,8 @@ Output only valid JSON. No explanation or commentary.
 
   } catch (err) {
     return {
-      text: `❌ ERROR: ${err.message || "Unknown error"}\n`,
+      text: `❌ ERROR: ${err.message || "Unknown error"}
+`,
       choices: ["Try again", "Reset"]
     };
   }
