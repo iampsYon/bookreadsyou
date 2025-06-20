@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Book Reads You</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>The Book Reads You</h1>
+
+    <div id="user-form">
+      <input type="text" id="name" placeholder="Your Name" />
+      <select id="genre">
+        <option value="sci-fi">Sci-Fi</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="noir">Noir</option>
+      </select>
+      <label>Moral Alignment:</label>
+      <input type="range" id="morality" min="0" max="100" value="50" />
+      <button onclick="startStory()">Begin</button>
+    </div>
+
+    <div id="story-container" style="display:none;">
+      <div id="story-text"></div>
+      <div id="choices"></div>
+    </div>
+  </div>
+
+  <script src="openai.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
