@@ -1,4 +1,4 @@
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "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";
 
 async function getGPTScene(user, history) {
   const prompt = `
@@ -37,7 +37,6 @@ Output only valid JSON. No explanation or commentary.
     });
 
     const json = await res.json();
-
     const content = json?.choices?.[0]?.message?.content;
     const raw = JSON.stringify(json, null, 2);
 
