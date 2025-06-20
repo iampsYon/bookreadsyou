@@ -2,16 +2,18 @@ const OPENAI_API_KEY = "sk-proj-dALcEnPoePIqLYzfb243COvGhENsWezL9HJALQAocHJrXQe_
 
 async function getGPTScene(user, history) {
   const prompt = `
-The reader is named ${user.name}, who prefers ${user.genre} stories and has a moral alignment score of ${user.morality} (0 = dishonest, 100 = virtuous).
-Story so far: ${history.slice(0, -1).join(" -> ")}
-User just chose: "${history[history.length - 1]}"
+You are an interactive storytelling engine. The reader is named ${user.name}, who prefers ${user.genre} stories and has a morality score of ${user.morality} (0 = dishonest, 100 = virtuous).
 
-Generate a short paragraph of what happens next. End with 2–3 choices.
+Previous choices: ${history.slice(0, -1).join(" → ")}
+Latest choice: "${history[history.length - 1]}"
 
-Respond in JSON like:
+Write a new paragraph of story that continues from that choice.
+Then output 2–3 new decisions the reader can make.
+
+Respond ONLY in this exact JSON format:
 {
-  "text": "Story paragraph here...",
-  "choices": ["Option 1", "Option 2", "Option 3"]
+  "text": "Narrative paragraph here...",
+  "choices": ["Choice A", "Choice B", "Choice C"]
 }
 `;
 
@@ -36,8 +38,8 @@ Respond in JSON like:
     return JSON.parse(text);
   } catch (e) {
     return {
-      text: "Something went wrong parsing the AI response. Here's the raw output:\n\n" + text,
-      choices: ["Try again", "Reset story"]
+      text: "⚠️ GPT response was not valid JSON. Here’s the raw output:\n\n" + text,
+      choices: ["Try again", "Reset"]
     };
   }
 }
