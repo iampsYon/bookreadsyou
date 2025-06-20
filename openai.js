@@ -37,30 +37,16 @@ Output only valid JSON. No explanation or commentary.
     });
 
     const json = await res.json();
-    const text = json.choices?.[0]?.message?.content || "";
 
-    // Pre-clean the response
-    const cleaned = text
-      .replace(/[“”]/g, '"')
-      .replace(/[‘’]/g, "'")
-      .trim();
-
-    // Attempt to parse
-    return JSON.parse(cleaned);
+    // Debug log the full raw response
+    return {
+      text: `🔍 Full OpenAI response:\n\n${JSON.stringify(json, null, 2)}`,
+      choices: ["Try again", "Reset"]
+    };
 
   } catch (err) {
-    const debugMessage = `
-⚠️ GPT response was not valid JSON.
---- BEGIN RAW OUTPUT ---
-${err?.message || "Unknown error"}
-
-If available, here’s the GPT raw output:
-${typeof text !== "undefined" ? text : "No response returned"}
---- END RAW OUTPUT ---
-    `.trim();
-
     return {
-      text: debugMessage,
+      text: `❌ ERROR: ${err.message || "Unknown error"}`,
       choices: ["Try again", "Reset"]
     };
   }
