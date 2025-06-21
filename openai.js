@@ -12,7 +12,7 @@ async function getGPTScene(user, history) {
 
     if (json.error) {
       return {
-        text: `❌ GPT error: ${json.error}`,
+        text: `❌ GPT error: ${json.error}\n\n--- RAW GPT OUTPUT ---\n${json.raw || "None"}`,
         choices: ["Try again", "Reset"]
       };
     }
