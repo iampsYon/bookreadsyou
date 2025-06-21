@@ -11,16 +11,34 @@
     <h1>The Book Reads You</h1>
 
     <div id="user-form" style="max-width: 600px; margin: 2rem auto;">
-      <input type="text" id="name" placeholder="Your Name" />
-
-      <select id="genre">
-        <option value="sci-fi">Sci-Fi</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="noir">Noir</option>
-      </select>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <input type="text" id="name" placeholder="Your Name" style="flex: 1;" />
+        <select id="genre" style="flex: 1;">
+          <option value="sci-fi">Sci-Fi</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="noir">Noir</option>
+        </select>
+      </div>
 
       <label for="morality" style="display:block; margin-top: 1rem;">Moral Alignment:</label>
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
         <span style="font-size: 0.85rem; width: 4rem;">Cunning</span>
         <input type="range" id="morality" min="0" max="100" value="50" style="flex-grow: 1;" />
-        <span style="font-size: 0.85rem; width: 4rem; text-align: right;">Principled</spa
+        <span style="font-size: 0.85rem; width: 4rem; text-align: right;">Principled</span>
+      </div>
+
+      <div style="margin-top: 1rem; text-align: right;">
+        <button onclick="startStory()">Begin</button>
+      </div>
+    </div>
+
+    <div id="story-container" style="display:none;">
+      <div id="story-text"></div>
+      <div id="choices"></div>
+    </div>
+  </div>
+
+  <script src="openai.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
