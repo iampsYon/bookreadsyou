@@ -1,17 +1,26 @@
-<div id="user-form">
-  <input type="text" id="name" placeholder="Your Name" />
-  <select id="genre">
-    <option value="sci-fi">Sci-Fi</option>
-    <option value="fantasy">Fantasy</option>
-    <option value="noir">Noir</option>
-  </select>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Book Reads You</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>The Book Reads You</h1>
 
-  <label for="morality">Moral Alignment:</label><br />
-  <div style="display: flex; align-items: center; gap: 0.5rem;">
-    <span style="font-size: 0.85rem;">Cunning</span>
-    <input type="range" id="morality" min="0" max="100" value="50" style="flex: 1;" />
-    <span style="font-size: 0.85rem;">Principled</span>
-  </div>
+    <div id="user-form" style="max-width: 600px; margin: 2rem auto;">
+      <input type="text" id="name" placeholder="Your Name" />
 
-  <button onclick="startStory()">Begin</button>
-</div>
+      <select id="genre">
+        <option value="sci-fi">Sci-Fi</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="noir">Noir</option>
+      </select>
+
+      <label for="morality" style="display:block; margin-top: 1rem;">Moral Alignment:</label>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+        <span style="font-size: 0.85rem; width: 4rem;">Cunning</span>
+        <input type="range" id="morality" min="0" max="100" value="50" style="flex-grow: 1;" />
+        <span style="font-size: 0.85rem; width: 4rem; text-align: right;">Principled</spa
