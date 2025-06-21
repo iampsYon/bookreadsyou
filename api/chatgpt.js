@@ -52,6 +52,9 @@ Output only valid JSON. No explanation or commentary.
     }
 
     const cleaned = content
+      .replace(/^```json/, "")       // strip start ```json
+      .replace(/^```/, "")           // strip start ```
+      .replace(/```$/, "")           // strip ending ```
       .replace(/[“”]/g, '"')
       .replace(/[‘’]/g, "'")
       .trim();
