@@ -1,34 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Book Reads You</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>The Book Reads You</h1>
+<div id="user-form">
+  <input type="text" id="name" placeholder="Your Name" />
+  <select id="genre">
+    <option value="sci-fi">Sci-Fi</option>
+    <option value="fantasy">Fantasy</option>
+    <option value="noir">Noir</option>
+  </select>
 
-    <div id="user-form">
-      <input type="text" id="name" placeholder="Your Name" />
-      <select id="genre">
-        <option value="sci-fi">Sci-Fi</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="noir">Noir</option>
-      </select>
-      <label>Moral Alignment:</label>
-      <input type="range" id="morality" min="0" max="100" value="50" />
-      <button onclick="startStory()">Begin</button>
-    </div>
-
-    <div id="story-container" style="display:none;">
-      <div id="story-text"></div>
-      <div id="choices"></div>
-    </div>
+  <label for="morality">Moral Alignment:</label><br />
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <span style="font-size: 0.85rem;">Cunning</span>
+    <input type="range" id="morality" min="0" max="100" value="50" style="flex: 1;" />
+    <span style="font-size: 0.85rem;">Principled</span>
   </div>
 
-  <script src="openai.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
+  <button onclick="startStory()">Begin</button>
+</div>
