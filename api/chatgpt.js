@@ -10,7 +10,8 @@ You are a story generation engine. Return only a valid JSON object like this:
 
 {
   "text": "Narrative paragraph here...",
-  "choices": ["Choice A", "Choice B", "Choice C"]
+  "choices": ["Choice A", "Choice B"],
+  "end": true // only include this if the story is concluding
 }
 
 User info:
@@ -21,8 +22,11 @@ User info:
 Story so far: ${history.slice(0, -1).join(" → ")}
 Last choice: "${history[history.length - 1]}"
 
-Continue the story with one paragraph, then give 2–3 next choices.
-Output only valid JSON. No explanation or commentary.
+Write the next story paragraph and 2–3 choices.
+
+If this is the 15th scene (or the story is logically near an end), return a final paragraph and set "end": true in the JSON.
+Do not wrap the JSON in backticks or markdown.
+Respond only with the valid JSON object.
 `;
 
   try {
@@ -52,9 +56,9 @@ Output only valid JSON. No explanation or commentary.
     }
 
     const cleaned = content
-      .replace(/^```json/, "")       // strip start ```json
-      .replace(/^```/, "")           // strip start ```
-      .replace(/```$/, "")           // strip ending ```
+      .replace(/^```json/, "")
+      .replace(/^```/, "")
+      .replace(/```$/, "")
       .replace(/[“”]/g, '"')
       .replace(/[‘’]/g, "'")
       .trim();
