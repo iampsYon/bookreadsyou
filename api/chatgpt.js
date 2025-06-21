@@ -42,11 +42,12 @@ Output only valid JSON. No explanation or commentary.
 
     const data = await openaiRes.json();
     const content = data?.choices?.[0]?.message?.content;
+    const raw = JSON.stringify(data, null, 2);
 
     if (!content) {
       return res.status(500).json({
         error: "No content returned from GPT",
-        raw: data
+        raw
       });
     }
 
@@ -59,7 +60,9 @@ Output only valid JSON. No explanation or commentary.
     return res.status(200).json(parsed);
 
   } catch (err) {
-    return res.status(500).json({ error: err.message || "Unknown error" });
+    return res.status(500).json({
+      error: err.message || "Unknown error",
+      raw: null
+    });
   }
 }
-
